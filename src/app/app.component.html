@@ -1,28 +1,11 @@
-<!-- chat.component.html
-
-<div class="chat-container">
-  <div class="chat-messages">
-    <div class="message" *ngFor="let message of messages">
-      <div class="sender">{{ message.sender }}</div>
-      <div class="content">{{ message.content }}</div>
-    </div>
-  </div>
-
-  <div class="chat-input">
-    <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." />
-    <button (click)="sendMessage()">Send</button>
-  </div>
-</div> -->
 
 
-<!-- chat.component.html -->
-
-<div class="name-input" *ngIf=!isUserThere()>
-  <input type="text" [(ngModel)]="nameInput" placeholder="Enter your name..." />
+<div *ngIf="!isUsernameStored" class="userinput">
+  <input class="input-box" type="text" [(ngModel)]="username" placeholder="Enter your name..." />
   <button (click)="saveUsername()">Save</button>
 </div>
 
-<div class="chat-container" *ngIf=isUserThere()>
+<div class="chat-container" *ngIf="isUsernameStored">
   <div class="chat-messages">
     <div class="message" *ngFor="let message of messages">
       <div class="sender">{{ message.sender }}</div>

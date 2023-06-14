@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChatServiceService } from './chat-service.service';
 
 
 interface Message {
@@ -13,16 +14,27 @@ interface Message {
 })
 export class AppComponent {
   title = 'chat-app';
-  nameInput: string = ""
+  username: string = ""
   messages: Message[] = [];
   newMessage: string = "";
+  isUsernameStored: boolean = false;
+  constructor(private chatService: ChatServiceService){}
+  async sendMessage(){
+    this.messages.push({"sender": this.username, "content": this.newMessage});
+    this.chatService.getBotResponse({
+      'WaId': this.getUserName(),
+      "Body": this.newMessage
+    }).subscribe((res)=>{
+      console.log(res);
 
-  sendMessage(){
-    this.messages.push({"sender": "Sudhir", "content": "How are you"})
+      this.messages.push({"sender": res['sentBy'],"content": res['msg']})
+      this.newMessage = ""
+  })
   }
 
-  saveUsername(){
-    localStorage.setItem("userName", this.nameInput)
+  saveUsername() {
+    localStorage.setItem('username', this.username);
+    this.isUsernameStored = true;
   }
 
   isUserThere(){
@@ -30,5 +42,24 @@ export class AppComponent {
       return true;
     }
     return false;
+  }
+
+  getUserName(){
+    if(localStorage.getItem("userName")!=""){
+      return localStorage.getItem("userName")
+    }
+    else{
+      return ""
+    }
+  }
+  
+
+  ngOnInit() {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      // Username already exists in local storage
+      this.username = storedUsername;
+      this.isUsernameStored = true;
+    }
   }
 }
