@@ -193,11 +193,6 @@ input:focus {
 }
 
 /* Styling the avatar  */
-received-chats-img {
-  display: inline-block;
-  width: 50px;
-  float: left;
-}
 
 .received-msg {
   display: inline-block;
@@ -290,12 +285,7 @@ p {
 }
 
 /* Styling the avatar */
-.outgoing-chats-img {
-  display: inline-block;
-  width: 50px;
-  float: right;
-  margin-right: 1rem;
-}
+
 @media only screen and (max-device-width: 850px) {
   *,
   .time {
