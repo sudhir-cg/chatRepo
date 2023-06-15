@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatServiceService } from './chat-service.service';
 
-
 interface Message {
   sender: string;
   content: string;
@@ -10,26 +9,29 @@ interface Message {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  dateToday: number = Date.now();
   title = 'chat-app';
-  username: string = ""
+  username: string = '';
   messages: Message[] = [];
-  newMessage: string = "";
+  newMessage: string = '';
   isUsernameStored: boolean = false;
-  constructor(private chatService: ChatServiceService){}
-  async sendMessage(){
-    this.messages.push({"sender": this.username, "content": this.newMessage});
-    this.chatService.getBotResponse({
-      'WaId': this.getUserName(),
-      "Body": this.newMessage
-    }).subscribe((res)=>{
-      console.log(res);
+  constructor(private chatService: ChatServiceService) {}
+  async sendMessage() {
+    this.messages.push({ sender: this.username, content: this.newMessage });
+    this.chatService
+      .getBotResponse({
+        WaId: this.getUserName(),
+        Body: this.newMessage,
+      })
+      .subscribe((res) => {
+        console.log(res);
 
-      this.messages.push({"sender": res['sentBy'],"content": res['msg']})
-      this.newMessage = ""
-  })
+        this.messages.push({ sender: res['sentBy'], content: res['msg'] });
+      });
+    this.newMessage = '';
   }
 
   saveUsername() {
@@ -37,22 +39,20 @@ export class AppComponent {
     this.isUsernameStored = true;
   }
 
-  isUserThere(){
-    if(localStorage.getItem("userName")!=""){
+  isUserThere() {
+    if (localStorage.getItem('userName') != '') {
       return true;
     }
     return false;
   }
 
-  getUserName(){
-    if(localStorage.getItem("userName")!=""){
-      return localStorage.getItem("userName")
-    }
-    else{
-      return ""
+  getUserName() {
+    if (localStorage.getItem('userName') != '') {
+      return localStorage.getItem('userName');
+    } else {
+      return '';
     }
   }
-  
 
   ngOnInit() {
     const storedUsername = localStorage.getItem('username');

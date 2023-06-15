@@ -1,21 +1,81 @@
-
-
-<div *ngIf="!isUsernameStored" class="userinput">
-  <input class="input-box" type="text" [(ngModel)]="username" placeholder="Enter your name..." />
-  <button (click)="saveUsername()">Save</button>
-</div>
-
-<div class="chat-container" *ngIf="isUsernameStored">
-  <div class="chat-messages">
-    <div class="message" *ngFor="let message of messages">
-      <div class="sender">{{ message.sender }}</div>
-      <div class="content">{{ message.content }}</div>
+<div class="main">
+  <div class="username-card" *ngIf="!isUsernameStored">
+    <div class="userinput">
+      <input
+        class="input-box"
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter your name..."
+        (keydown.enter)="saveUsername()"
+      />
+      <button (click)="saveUsername()" class="username-btn">
+        Set Username
+      </button>
     </div>
   </div>
-
-  <div class="chat-input">
-    <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." />
-    <button (click)="sendMessage()">Send</button>
-  </div>
 </div>
 
+<div class="container" *ngIf="isUsernameStored">
+  <!-- msg-header section starts -->
+  <div class="msg-header">
+    <div class="container1">
+      <!-- <img src="user1.png" class="msgimg" /> -->
+      <div class="active">
+        <p>CG Assistant</p>
+      </div>
+    </div>
+  </div>
+  <!-- msg-header section ends -->
+
+  <!-- Chat inbox  -->
+  <div class="chat-page">
+    <div class="msg-inbox">
+      <div class="chats" style="height: 75vh">
+        <p style="font-size: 1.2rem; font-weight: bolder; text-align: center">
+          Start a conversation by asking Questions related to CG Infinity
+        </p>
+        <!-- Message container -->
+        <div class="msg-page">
+          <!-- Incoming messages -->
+
+          <div class="received-chats">
+            <div class="received-msg">
+              <div
+                class="outgoing-msg-inbox"
+                *ngFor="let message of messages; let i = index"
+                [ngClass]="message.sender != 'CG Assistant' ? 'left' : 'right'"
+              >
+                <!-- <div class="sender">{{ message.sender }}</div>
+                <div class="content">{{ message.content }}</div> -->
+                <span>{{ message.sender }}</span>
+                <p class="" style="font-weight: bold">
+                  {{ message.content }}
+                </p>
+                <span class="time">{{ dateToday | date : "medium" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- msg-bottom section -->
+
+      <div class="msg-bottom">
+        <div class="input-section">
+          <input
+            type="text"
+            class="form-control"
+            style="width: 100%"
+            [(ngModel)]="newMessage"
+            placeholder="Type your message..."
+            (keydown.enter)="sendMessage()"
+          />
+
+          <span class="input-group-text send-icon" (click)="sendMessage()">
+            <i class="bi bi-send"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
