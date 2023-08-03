@@ -23,7 +23,7 @@ export class AppComponent {
     this.messages.push({ sender: this.username, content: this.newMessage });
     this.chatService
       .getBotResponse({
-        WaId: this.getUserName(),
+        WaId: this.username,
         Body: this.newMessage,
       })
       .subscribe((res) => {

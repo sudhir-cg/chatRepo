@@ -21,7 +21,7 @@
     <div class="container1">
       <!-- <img src="user1.png" class="msgimg" /> -->
       <div class="active">
-        <p>CG Assistant</p>
+        <p>Shell Assistant</p>
       </div>
     </div>
   </div>
@@ -43,7 +43,9 @@
               <div
                 class="outgoing-msg-inbox"
                 *ngFor="let message of messages; let i = index"
-                [ngClass]="message.sender != 'CG Assistant' ? 'left' : 'right'"
+                [ngClass]="
+                  message.sender != 'Shell Assistant' ? 'right' : 'left'
+                "
               >
                 <!-- <div class="sender">{{ message.sender }}</div>
                 <div class="content">{{ message.content }}</div> -->
