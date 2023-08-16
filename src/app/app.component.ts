@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ChatServiceService } from './chat-service.service';
 
 interface Message {
   sender: string;
   content: string;
+  timestamp: number;
 }
 
 @Component({
@@ -11,16 +12,24 @@ interface Message {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  dateToday: number = Date.now();
+export class AppComponent implements AfterViewInit {
+  @ViewChild('msgContainer', { static: false })
+  container!: ElementRef<HTMLElement>;
+
   title = 'chat-app';
+  currentTime: any;
   username: string = '';
   messages: Message[] = [];
   newMessage: string = '';
   isUsernameStored: boolean = false;
+
   constructor(private chatService: ChatServiceService) {}
   async sendMessage() {
-    this.messages.push({ sender: this.username, content: this.newMessage });
+    this.messages.push({
+      sender: this.username,
+      content: this.newMessage,
+      timestamp: this.currentTime,
+    });
     this.chatService
       .getBotResponse({
         WaId: this.username,
@@ -29,7 +38,12 @@ export class AppComponent {
       .subscribe((res) => {
         console.log(res);
 
-        this.messages.push({ sender: res['sentBy'], content: res['msg'] });
+        this.messages.push({
+          sender: res['sentBy'],
+          content: res['msg'],
+          timestamp: this.currentTime,
+        });
+        console.log(this.messages);
       });
     this.newMessage = '';
   }
@@ -55,11 +69,21 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    setInterval(() => {
+      this.currentTime = new Date();
+    }, 1000);
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       // Username already exists in local storage
       this.username = storedUsername;
       this.isUsernameStored = true;
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.container) {
+      this.container.nativeElement.scrollTop =
+        this.container.nativeElement.scrollHeight;
     }
   }
 }

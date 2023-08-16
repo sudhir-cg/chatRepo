@@ -32,30 +32,31 @@
     <div class="msg-inbox">
       <div class="chats" style="height: 75vh">
         <p style="font-size: 1.2rem; font-weight: bolder; text-align: center">
-          Start a conversation by asking Questions related to CG Infinity
+          Start a conversation by asking Questions related to Shell Energy
         </p>
         <!-- Message container -->
         <div class="msg-page">
           <!-- Incoming messages -->
 
-          <div class="received-chats">
-            <div class="received-msg">
-              <div
-                class="outgoing-msg-inbox"
-                *ngFor="let message of messages; let i = index"
-                [ngClass]="
-                  message.sender != 'Shell Assistant' ? 'right' : 'left'
-                "
-              >
-                <!-- <div class="sender">{{ message.sender }}</div>
+          <div
+            class="outgoing-msg-inbox"
+            *ngFor="let message of messages; let i = index"
+            [ngClass]="message.sender != 'Shell Assistant' ? 'right' : 'left'"
+          >
+            <!-- <div class="sender">{{ message.sender }}</div>
                 <div class="content">{{ message.content }}</div> -->
-                <span>{{ message.sender }}</span>
-                <p class="" style="font-weight: bold">
-                  {{ message.content }}
-                </p>
-                <span class="time">{{ dateToday | date : "medium" }}</span>
-              </div>
-            </div>
+            <span>{{ message.sender }}</span>
+            <pre
+              class="preformatted-text"
+              [ngClass]="
+                message.sender != 'Shell Assistant'
+                  ? 'right-bubble'
+                  : 'left-bubble'
+              "
+              style="font-weight: bold"
+              >{{ message.content }}</pre
+            >
+            <span class="time">{{ message.timestamp | date : "medium" }}</span>
           </div>
         </div>
       </div>
